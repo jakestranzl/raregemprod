@@ -70,6 +70,20 @@
       opacity: 1;
       border-color: rgba(255,255,255,0.35);
     }
+    .sidebar-social {
+      margin-top: auto;
+      display: flex;
+      gap: 1rem;
+      padding-top: 2rem;
+    }
+    .sidebar-social-link {
+      color: var(--white);
+      opacity: 0.35;
+      transition: opacity 0.2s;
+      display: flex;
+      align-items: center;
+    }
+    .sidebar-social-link:hover { opacity: 1; }
 
     /* Offset all content from sidebar */
     body { margin-left: 200px; }
@@ -364,14 +378,18 @@
 
     /* ABOUT */
     #about {
-      padding: 6rem 2.5rem;
+      padding: 2rem 2.5rem 3rem;
       border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
     }
     .about-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
+      gap: 3rem;
+      align-items: center;
     }
     .about-body {
       font-family: 'Space Mono', monospace;
@@ -384,6 +402,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4px;
+      margin-top: -1.5rem;
     }
     .about-img-main {
       grid-column: 1 / -1;
@@ -394,6 +413,19 @@
       aspect-ratio: 1/1;
       overflow: hidden;
     }
+    .about-links { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
+    .about-social-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      text-decoration: none;
+      border-bottom: 1px solid var(--yellow);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+    .about-social-link:hover { opacity: 0.65; }
     .about-img-main img, .about-img-side img {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -470,20 +502,50 @@
       padding: 6rem 0;
     }
     #stills .section-label, #stills .section-title { padding: 0 2.5rem; }
-    .stills-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
+    #about .section-title { margin-bottom: 1.5rem; }
+    .stills-wrap {
+      position: relative;
+    }
+    .stills-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      width: 100%;
+      scrollbar-width: none;
+    }
+    .stills-scroll::-webkit-scrollbar { display: none; }
+    .stills-track {
+      display: flex;
       gap: 4px;
+      align-items: center;
+      width: max-content;
     }
-    .still-item { aspect-ratio: 3/2; overflow: hidden; }
+    .stills-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(6,15,13,0.7);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--white);
+      font-size: 1.1rem;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .stills-arrow:hover { background: rgba(6,15,13,0.95); }
+    .stills-arrow-left  { left: 1rem; }
+    .stills-arrow-right { right: 1rem; }
+    .still-item { flex: 0 0 auto; }
     .still-item img {
-      width: 100%; height: 100%;
-      object-fit: cover;
       display: block;
-      filter: brightness(0.88);
-      transition: filter 0.3s, transform 0.4s;
+      height: 38vh;
+      width: auto;
     }
-    .still-item:hover img { filter: brightness(1.05); transform: scale(1.04); }
 
     /* CONTACT */
     #contact {
@@ -655,9 +717,107 @@
     }
     .modal-yt-fallback a { color: var(--yellow); text-decoration: none; }
     .modal-yt-fallback a:hover { text-decoration: underline; }
+    #modal-role { color: var(--yellow); display: block; margin-bottom: 0.3rem; }
+
+    /* MOBILE NAV BAR (hidden on desktop) */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--black);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 1rem 1.4rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mobile-nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      line-height: 1.1;
+    }
+    .mobile-nav-links {
+      display: flex;
+      gap: 1rem;
+    }
+    .mobile-nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      /* Show mobile nav, hide sidebar */
+      .mobile-nav { display: flex; }
+      .sidebar { display: none; }
+      body { margin-left: 0; padding-top: 56px; }
+
+      /* HERO */
+      #hero { padding: 0 1.2rem 4vh; }
+      .hero-title { white-space: normal; font-size: clamp(2.2rem, 10vw, 3.5rem); }
+      .hero-mascot { width: clamp(100px, 28vw, 160px); top: 6%; right: 4%; }
+      .scroll-indicator { display: none; }
+
+      /* WORK */
+      #work { padding: 2rem 1.2rem 3rem; }
+      .work-grid { grid-template-columns: repeat(2, 1fr); }
+      .social-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* CAPABILITIES */
+      #capabilities { padding: 3rem 1.2rem; }
+      .cap-grid { grid-template-columns: repeat(2, 1fr); gap: 1.8rem; }
+
+      /* ABOUT */
+      #about { padding: 3rem 1.2rem; }
+      .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+
+      /* FIELD NOTES */
+      #field-notes { padding: 3rem 1.2rem; }
+      .field-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+      .field-grid { grid-template-columns: 1fr; }
+
+      /* STILLS */
+      #stills { padding: 3rem 0; }
+      .still-item img { max-height: 50vh; }
+
+      /* CONTACT */
+      #contact { padding: 3rem 1.2rem; }
+      .contact-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .contact-form { grid-template-columns: 1fr; }
+
+      /* FOOTER */
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+      /* MODAL */
+      .modal-inner { width: 96vw; }
+      .modal-inner.is-vertical { height: 80vh; }
+    }
+
+    @media (max-width: 480px) {
+      .work-grid { grid-template-columns: 1fr; }
+      .social-grid { grid-template-columns: repeat(2, 1fr); }
+      .cap-grid { grid-template-columns: 1fr; }
+      .mobile-nav-links { display: none; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-brand">Rare Gem<br>Productions</div>
+    <div class="mobile-nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
@@ -667,9 +827,17 @@
       <a href="#capabilities">Capabilities</a>
       <a href="#about">About</a>
       <a href="#field-notes">Field Notes</a>
-      <a href="#stills">Stills</a>
       <a href="#contact">Contact</a>
+      <a href="#stills">Stills</a>
     </nav>
+    <div class="sidebar-social">
+      <a href="https://www.instagram.com/raregemproductions/" target="_blank" rel="noopener" class="sidebar-social-link" title="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@RareGemProductions" target="_blank" rel="noopener" class="sidebar-social-link" title="YouTube">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+      </a>
+    </div>
   </aside>
 
   <!-- HERO -->
@@ -696,11 +864,9 @@
         <div class="section-label">Selected Work</div>
         <div class="section-title">Recent Films</div>
       </div>
-      <a href="#" class="link-arrow">All Films ↗</a>
     </div>
     <div class="work-filters">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="films">Films</button>
+      <button class="filter-btn active" data-filter="films">Films</button>
       <button class="filter-btn" data-filter="social">Social</button>
     </div>
 
@@ -708,49 +874,58 @@
     <!-- Films 2-col -->
     <div class="work-grid">
 
-      <div class="work-card" data-cat="brand" data-video-id="WV6Js-KmWWI">
+      <div class="work-card" data-cat="brand" data-video-id="WV6Js-KmWWI" data-role="Director / DP / Editor">
         <img class="work-card-thumb"
              src="https://img.youtube.com/vi/WV6Js-KmWWI/maxresdefault.jpg"
              alt="A Day on the Salt" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">A Day on the Salt</div>
+          <div class="work-card-tag">Brand &middot; YouTube</div>
           <div class="work-card-title">Kenai Riverside Resort</div>
         </div>
       </div>
 
-      <div class="work-card" data-cat="wildlife" data-video-id="AB4I2oyG730">
+      <div class="work-card" data-cat="wildlife" data-video-id="AB4I2oyG730" data-role="Director / DP / Editor">
         <img class="work-card-thumb" src="https://img.youtube.com/vi/AB4I2oyG730/maxresdefault.jpg" alt="Bears" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Bears</div>
+          <div class="work-card-tag">Brand &middot; YouTube</div>
           <div class="work-card-title">Kenai Riverside Resort</div>
         </div>
       </div>
 
-      <div class="work-card" data-cat="documentary" data-video-id="jNdvmXwzN6Y">
+      <div class="work-card" data-cat="documentary" data-video-id="jNdvmXwzN6Y" data-role="Director / DP / Editor">
         <img class="work-card-thumb" src="https://img.youtube.com/vi/jNdvmXwzN6Y/maxresdefault.jpg" alt="Fenway Park Farm" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Brand Documentary</div>
-          <div class="work-card-title">Fenway Park Farm</div>
+          <div class="work-card-tag">Brand Documentary &middot; YouTube</div>
+          <div class="work-card-title">Boston Red Sox</div>
         </div>
       </div>
 
-      <div class="work-card" data-cat="brand" data-video-id="3mc48GH8BNg">
+      <div class="work-card" data-cat="brand" data-video-id="3mc48GH8BNg" data-role="Editor">
         <img class="work-card-thumb" src="https://img.youtube.com/vi/3mc48GH8BNg/maxresdefault.jpg" alt="Fitz Roy Jump" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Brand · YouTube</div>
+          <div class="work-card-tag">Brand &middot; YouTube</div>
           <div class="work-card-title">GoPro</div>
         </div>
       </div>
 
-      <div class="work-card" data-cat="brand" data-video-id="FLNtC_ZQq2c">
+      <div class="work-card" data-cat="documentary" data-video-id="eKyiTEIRx2I" data-role="Director / DP / Editor">
+        <img class="work-card-thumb" src="https://img.youtube.com/vi/eKyiTEIRx2I/maxresdefault.jpg" alt="Kenai Riverside Resort" />
+        <div class="play-icon"></div>
+        <div class="work-card-overlay">
+          <div class="work-card-tag">Brand Documentary &middot; YouTube</div>
+          <div class="work-card-title">Kenai Riverside Resort</div>
+        </div>
+      </div>
+
+      <div class="work-card" data-cat="brand" data-video-id="FLNtC_ZQq2c" data-role="Director / DP / Editor">
         <img class="work-card-thumb" src="https://img.youtube.com/vi/FLNtC_ZQq2c/maxresdefault.jpg" alt="Kasilof River Spotlight" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Kasilof River Spotlight</div>
+          <div class="work-card-tag">Brand &middot; YouTube</div>
           <div class="work-card-title">Kenai Riverside Resort</div>
         </div>
       </div>
@@ -764,7 +939,7 @@
         <img class="work-card-thumb" src="./thumb_kenai.jpg" alt="Places to Be" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Instagram Reel</div>
+          <div class="work-card-tag">Brand &middot; Social</div>
           <div class="work-card-title">Kenai Riverside Resort</div>
         </div>
       </div>
@@ -773,7 +948,7 @@
         <img class="work-card-thumb" src="./thumb_dogdays.jpg" alt="Dog Days" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Vertical Social</div>
+          <div class="work-card-tag">Brand &middot; Social</div>
           <div class="work-card-title">Boston Red Sox</div>
         </div>
       </div>
@@ -782,7 +957,7 @@
         <img class="work-card-thumb" src="./thumb_kasilofvibe.jpg" alt="Kasilof Vibe" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Vertical Social</div>
+          <div class="work-card-tag">Brand &middot; Social</div>
           <div class="work-card-title">Kenai Riverside Resort</div>
         </div>
       </div>
@@ -791,16 +966,16 @@
         <img class="work-card-thumb" src="./thumb_magical_thing.jpg" alt="Magical Thing" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Vertical Social</div>
+          <div class="work-card-tag">Brand &middot; Social</div>
           <div class="work-card-title">Boston Red Sox</div>
         </div>
       </div>
 
-      <div class="work-card" data-video-src="./zacca.mov">
+      <div class="work-card" data-video-src="./zacca.mp4">
         <img class="work-card-thumb" src="./thumb_zacca.jpg" alt="Zacca" />
         <div class="play-icon"></div>
         <div class="work-card-overlay">
-          <div class="work-card-tag">Vertical Social</div>
+          <div class="work-card-tag">Brand &middot; Social</div>
           <div class="work-card-title">Zacca Hummus</div>
         </div>
       </div>
@@ -828,7 +1003,7 @@
       <div class="cap-item">
         <div class="cap-number">03 / Social</div>
         <div class="cap-name">Social<br>Media</div>
-        <div class="cap-desc">Vertical-first cuts of every shoot. Instagram Reels, YouTube Shorts, TikTok.</div>
+        <div class="cap-desc">Vertical-first engaging content for Instagram, Facebook, and TikTok.</div>
       </div>
       <div class="cap-item">
         <div class="cap-number">04 / Photo</div>
@@ -841,10 +1016,15 @@
   <!-- ABOUT -->
   <section id="about">
     <div class="section-label">About</div>
+    <div class="section-title">The Filmmaker</div>
+    <div class="about-inner">
     <div class="about-layout">
       <div class="about-text">
-        <p class="about-body">Jake Stranzl is a filmmaker and editor running Rare Gem Productions out of Idaho. He makes films for fishing lodges, outfitters, and outdoor brands across the West — from hero videos that sell a season to short docs that tell the story behind the place.</p>
-        <p class="about-body">Before going independent he worked at GoPro and the Boston Red Sox, bringing that same level of craft to every project since.</p>
+        <p class="about-body">Jake Stranzl is a filmmaker and fly fisherman based in Idaho, and runs Rare Gem Productions. Before going independent he worked at GoPro and the Boston Red Sox, and he brings that same level of professional craft to every project.</p>
+        <div class="about-links">
+          <a href="https://www.instagram.com/raregemproductions/" target="_blank" rel="noopener" class="about-social-link">Instagram ↗</a>
+          <a href="https://www.linkedin.com/in/jake-stranzl-61a1b21b9/" target="_blank" rel="noopener" class="about-social-link">LinkedIn ↗</a>
+        </div>
       </div>
       <div class="about-images">
         <div class="about-img-main">
@@ -858,6 +1038,8 @@
         </div>
       </div>
     </div>
+    </div><!-- /.about-layout -->
+    </div><!-- /.about-inner -->
   </section>
 
   <!-- FIELD NOTES -->
@@ -871,45 +1053,30 @@
       <a href="https://www.youtube.com/@RareGemProductions" target="_blank" class="link-arrow">Subscribe ↗</a>
     </div>
     <div class="field-grid">
-      <div class="field-card" data-video-id="">
-        <div style="width:100%;height:100%;background:#0c1c18;"></div>
+      <div class="field-card" data-video-id="vfQ4LR_bZbc">
+        <img class="work-card-thumb" src="https://img.youtube.com/vi/vfQ4LR_bZbc/maxresdefault.jpg" alt="Field Notes: Episode 1" />
+        <div class="play-icon"></div>
         <div class="field-card-overlay">
           <div class="field-card-meta">YouTube &middot; Personal</div>
           <div class="field-card-title">Field Notes: Episode 1</div>
         </div>
       </div>
-      <div class="field-card" data-video-id="">
-        <div style="width:100%;height:100%;background:#0c1c18;"></div>
+      <div class="field-card" data-video-id="EpUMqI8uNew">
+        <img class="work-card-thumb" src="https://img.youtube.com/vi/EpUMqI8uNew/maxresdefault.jpg" alt="Field Notes: Episode 2" />
+        <div class="play-icon"></div>
         <div class="field-card-overlay">
           <div class="field-card-meta">YouTube &middot; Personal</div>
           <div class="field-card-title">Field Notes: Episode 2</div>
         </div>
       </div>
-      <div class="field-card" data-video-id="">
-        <div style="width:100%;height:100%;background:#0c1c18;"></div>
+      <div class="field-card" data-video-id="Zhj6JwD77vk">
+        <img class="work-card-thumb" src="https://img.youtube.com/vi/Zhj6JwD77vk/maxresdefault.jpg" alt="Field Notes: Episode 3" />
+        <div class="play-icon"></div>
         <div class="field-card-overlay">
           <div class="field-card-meta">YouTube &middot; Personal</div>
           <div class="field-card-title">Field Notes: Episode 3</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- STILLS -->
-  <section id="stills">
-    <div class="section-label">Photography</div>
-    <div class="section-title">Stills</div>
-    <div class="stills-grid">
-      <div class="still-item"><img src="./_DSC6296.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC6658.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC6701.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC6909.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC7666.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC7794.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC7800.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC8462.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC8463.jpg" alt="" /></div>
-      <div class="still-item"><img src="./_DSC8769.jpg" alt="" /></div>
     </div>
   </section>
 
@@ -975,11 +1142,74 @@
     </div>
   </section>
 
+  <!-- STILLS -->
+  <section id="stills">
+    <div class="section-label">Photography</div>
+    <div class="section-title">Stills</div>
+    <div class="stills-wrap">
+      <div class="stills-arrow stills-arrow-left" id="stills-prev">&#8592;</div>
+      <div class="stills-arrow stills-arrow-right" id="stills-next">&#8594;</div>
+      <div class="stills-scroll">
+        <div class="stills-track" id="stills-track">
+          <div class="still-item"><img src="./_DSC0443.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC2877.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC2976.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC3004.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC3166.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC4153.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC4348.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5078.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5096.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5238.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5245.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6296.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6658.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6701.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6909.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC7666.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC7794.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC7800.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC8463.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC8769.jpg" alt="" /></div>
+          <div class="still-item"><img src="./yote-1749.jpg" alt="" /></div>
+          <!-- duplicate for seamless loop -->
+          <div class="still-item"><img src="./_DSC0443.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC2877.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC2976.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC3004.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC3166.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC4153.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC4348.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5078.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5096.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5238.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC5245.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6296.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6658.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6701.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC6909.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC7666.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC7794.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC7800.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC8463.jpg" alt="" /></div>
+          <div class="still-item"><img src="./_DSC8769.jpg" alt="" /></div>
+          <div class="still-item"><img src="./yote-1749.jpg" alt="" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <span class="footer-copy">&copy; 2026 Rare Gem Productions</span>
     <a href="mailto:raregemprod@gmail.com" class="footer-email">raregemprod@gmail.com</a>
   </footer>
+
+  <!-- PHOTO LIGHTBOX -->
+  <div class="modal-backdrop" id="lightbox" style="cursor:zoom-out;">
+    <button class="modal-close" id="lightbox-close">&#x2715; Close</button>
+    <img id="lightbox-img" src="" alt="" style="max-width:92vw;max-height:90vh;display:block;object-fit:contain;" />
+  </div>
 
   <!-- MODAL -->
   <div class="modal-backdrop" id="modal">
@@ -987,7 +1217,8 @@
       <button class="modal-close" id="modal-close">&#x2715; Close</button>
       <div class="modal-video-wrap" id="modal-video-wrap"></div>
       <div class="modal-yt-fallback" id="modal-yt-fallback" style="display:none;">
-        <a href="#" id="modal-yt-link" target="_blank" rel="noopener">Watch on YouTube &#x2197;</a>
+        <span id="modal-role"></span>
+        <a href="#" id="modal-yt-link" target="_blank" rel="noopener" style="display:none;"></a>
       </div>
     </div>
   </div>
@@ -999,6 +1230,7 @@
     const modalClose    = document.getElementById('modal-close');
     const modalFallback = document.getElementById('modal-yt-fallback');
     const modalYtLink   = document.getElementById('modal-yt-link');
+    const modalRole     = document.getElementById('modal-role');
 
     function openModal(card) {
       const ytId      = card.dataset.videoId;
@@ -1014,6 +1246,7 @@
         iframe.allowFullscreen = true;
         modalWrap.appendChild(iframe);
         modalYtLink.href = 'https://www.youtube.com/watch?v=' + ytId;
+        modalRole.textContent = card.dataset.role || '';
         modalFallback.style.display = 'block';
       } else if (videoSrc) {
         const video = document.createElement('video');
@@ -1062,7 +1295,53 @@
       });
     });
 
-    // ===== SIDEBAR ACTIVE LINK ON SCROLL =====
+    // ===== STILLS ARROWS + LOOP =====
+    (function() {
+      var scroll = document.querySelector('.stills-scroll');
+      var prev   = document.getElementById('stills-prev');
+      var next   = document.getElementById('stills-next');
+      if (!scroll || !prev || !next) return;
+      var step = 420;
+
+      // Seamless loop: duplicate set is second half of track
+      scroll.addEventListener('scroll', function() {
+        var half = scroll.scrollWidth / 2;
+        if (scroll.scrollLeft >= half) scroll.scrollLeft -= half;
+        if (scroll.scrollLeft <= 0 && scroll.scrollLeft < 10) scroll.scrollLeft += half;
+      });
+
+      next.addEventListener('click', function() {
+        scroll.scrollBy({ left: step, behavior: 'smooth' });
+      });
+      prev.addEventListener('click', function() {
+        scroll.scrollBy({ left: -step, behavior: 'smooth' });
+      });
+    })();
+
+    // ===== PHOTO LIGHTBOX =====
+    (function() {
+      var lb = document.getElementById('lightbox');
+      var lbImg = document.getElementById('lightbox-img');
+      var lbClose = document.getElementById('lightbox-close');
+      document.querySelectorAll('.still-item img').forEach(function(img) {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function() {
+          lbImg.src = img.src;
+          lb.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      function closeLb() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+      lbClose.addEventListener('click', closeLb);
+      lb.addEventListener('click', function(e) { if (e.target === lb || e.target === lbImg) closeLb(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+    })();
+
+// ===== SIDEBAR ACTIVE LINK ON SCROLL =====
     (function() {
       var sections = document.querySelectorAll('section[id]');
       var sideLinks = document.querySelectorAll('.sidebar-nav a');
