@@ -343,7 +343,7 @@
     }
     .cap-intro {
       font-family: 'Space Mono', monospace;
-      font-size: 0.78rem;
+      font-size: 0.88rem;
       line-height: 1.9;
       color: var(--gray);
       max-width: 560px;
@@ -371,7 +371,7 @@
     }
     .cap-desc {
       font-family: 'Space Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.82rem;
       line-height: 1.8;
       color: var(--gray);
     }
@@ -393,7 +393,7 @@
     }
     .about-body {
       font-family: 'Space Mono', monospace;
-      font-size: 0.82rem;
+      font-size: 0.92rem;
       line-height: 2;
       color: rgba(245,240,232,0.78);
       margin-bottom: 1.4rem;
@@ -451,7 +451,7 @@
     .field-header .section-title { margin-bottom: 0; }
     .field-intro {
       font-family: 'Space Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.78rem;
       color: var(--gray);
       margin-top: 0.4rem;
     }
@@ -560,14 +560,14 @@
     }
     .contact-desc {
       font-family: 'Space Mono', monospace;
-      font-size: 0.78rem;
+      font-size: 0.88rem;
       line-height: 1.95;
       color: var(--gray);
       margin-bottom: 2rem;
     }
     .contact-email-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.55rem;
+      font-size: 0.7rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--gray);
@@ -575,7 +575,7 @@
     }
     .contact-email {
       font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.85rem;
       color: var(--yellow);
       text-decoration: none;
       letter-spacing: 0.05em;
@@ -988,7 +988,7 @@
   <section id="capabilities">
     <div class="section-label">What We Do</div>
     <div class="section-title">Capabilities</div>
-    <p class="cap-intro">Full-service production from a small, hands-on team — concept to delivery.</p>
+    <p class="cap-intro" style="white-space: nowrap;">Full-service production from a small, hands-on team. Concept to delivery.</p>
     <div class="cap-grid">
       <div class="cap-item">
         <div class="cap-number">01 / Film</div>
@@ -1087,22 +1087,22 @@
         <p class="contact-email-label">Or just email</p>
         <a href="mailto:raregemprod@gmail.com" class="contact-email">raregemprod@gmail.com</a>
       </div>
-      <form class="contact-form" onsubmit="return false;">
+      <form class="contact-form" action="https://formspree.io/f/xykoaavj" method="POST">
         <div class="form-group">
           <label>Your Name</label>
-          <input type="text" />
+          <input type="text" name="name" required />
         </div>
         <div class="form-group">
           <label>Lodge / Brand / Outfit</label>
-          <input type="text" />
+          <input type="text" name="company" />
         </div>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" />
+          <input type="email" name="email" required />
         </div>
         <div class="form-group">
           <label>Project Type</label>
-          <select>
+          <select name="project-type">
             <option value="">Select one&hellip;</option>
             <option>Brand / Commercial Film</option>
             <option>Lodge / Operator Hero Film</option>
@@ -1114,11 +1114,11 @@
         </div>
         <div class="form-group">
           <label>Target Dates</label>
-          <input type="text" />
+          <input type="text" name="dates" />
         </div>
         <div class="form-group">
           <label>Budget Range</label>
-          <select>
+          <select name="budget">
             <option value="">Select range&hellip;</option>
             <option>Under $5k</option>
             <option>$5k &ndash; $15k</option>
@@ -1130,12 +1130,13 @@
         </div>
         <div class="form-group full">
           <label>The Project</label>
-          <textarea rows="5"></textarea>
+          <textarea rows="5" name="message"></textarea>
         </div>
         <div class="form-submit">
           <button type="submit">Send Inquiry</button>
         </div>
       </form>
+      <p class="form-success" id="form-success" style="display:none; color: var(--yellow); margin-top: 1.5rem; letter-spacing: 0.05em;">Thanks — I'll be in touch soon.</p>
     </div>
   </section>
 
@@ -1354,6 +1355,18 @@
       }
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+    })();
+
+    // Formspree success message
+    (function() {
+      if (window.location.search.indexOf('success') !== -1) {
+        var msg = document.getElementById('form-success');
+        if (msg) {
+          msg.style.display = 'block';
+          document.querySelector('.contact-form').style.display = 'none';
+          document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     })();
   </script>
 
