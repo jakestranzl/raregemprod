@@ -1020,7 +1020,7 @@
     <div class="about-inner">
     <div class="about-layout">
       <div class="about-text">
-        <p class="about-body">Jake Stranzl is a filmmaker and fly fisherman based in Idaho, and runs Rare Gem Productions. Before going independent he worked at GoPro and the Boston Red Sox, and he brings that same level of professional craft to every project.</p>
+        <p class="about-body">Rare Gem Productions is owned and operated by Jake&nbsp;Stranzl, a filmmaker and fly fisherman based in Idaho. Before going independent he worked at GoPro and the Boston Red Sox, and he brings that same level of professional craft to every project.</p>
         <div class="about-links">
           <a href="https://www.instagram.com/raregemproductions/" target="_blank" rel="noopener" class="about-social-link">Instagram ↗</a>
           <a href="https://www.linkedin.com/in/jake-stranzl-61a1b21b9/" target="_blank" rel="noopener" class="about-social-link">LinkedIn ↗</a>
@@ -1136,7 +1136,7 @@
           <button type="submit">Send Inquiry</button>
         </div>
       </form>
-      <p class="form-success" id="form-success" style="display:none; color: var(--yellow); margin-top: 1.5rem; letter-spacing: 0.05em;">Thanks — I'll be in touch soon.</p>
+      <p class="form-success" id="form-success" style="display:none; color: var(--yellow); margin-top: 1.5rem; letter-spacing: 0.05em;">Thanks. We'll be in touch soon.</p>
     </div>
   </section>
 
@@ -1357,16 +1357,29 @@
       onScroll();
     })();
 
-    // Formspree success message
+    // Formspree AJAX submit — stay on page
     (function() {
-      if (window.location.search.indexOf('success') !== -1) {
-        var msg = document.getElementById('form-success');
-        if (msg) {
-          msg.style.display = 'block';
-          document.querySelector('.contact-form').style.display = 'none';
-          document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-        }
-      }
+      var form = document.querySelector('.contact-form');
+      var msg  = document.getElementById('form-success');
+      if (!form || !msg) return;
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var data = new FormData(form);
+        fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        }).then(function(res) {
+          if (res.ok) {
+            form.style.display = 'none';
+            msg.style.display = 'block';
+          } else {
+            alert('Something went wrong. Try emailing raregemprod@gmail.com directly.');
+          }
+        }).catch(function() {
+          alert('Something went wrong. Try emailing raregemprod@gmail.com directly.');
+        });
+      });
     })();
   </script>
 
